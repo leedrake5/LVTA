@@ -7,6 +7,7 @@ Based on [Jonn Geanakoplos's work](https://www.journals.uchicago.edu/doi/full/10
 
 > * the total of all debit balances in securities margin accounts; and
 > * the total of all free credit balances in all cash accounts and all securities margin accounts.1
+
 > FINRA collects the required data via FINRA's Customer Margin Balance Form. The data is compiled in aggregate form, made available below and in Excel format via the download link on this page. See Margin Balance Reporting: Frequently Asked Questions under FINRA Rule 4521(d) (published April 13, 2021) for additional guidance on the calculation of these balances. Monthly variations in the reported balances may be partially due to member firms modifying the methods used in determining the balances reported to FINRA since the publication of the FAQ. Please note, FINRA generally publishes updates to the Margin Statistics on the third week of the month following the reference month. FINRA does not provide the data outside of this webpage and data feeds are not available.
 
 Data is drawn from [this public google sheet](https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit?usp=sharing) which is updated monthly. 
