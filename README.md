@@ -12,6 +12,9 @@ Based on [Jonn Geanakoplos's work](https://www.journals.uchicago.edu/doi/full/10
 
 Data is drawn from [this public google sheet](https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit?usp=sharing) which is updated monthly. 
 
+Points represent cumulative losses for each day, bars represent monthly changes. The line repreents a general additive model smooth on cumulative losses to date; the shaded grey band represents the 95% confidence interval based on extant variation (e.g. point scatter). A wider grey band means more uncertainty, a narrower grey band means less uncertainty. 
+
+
 ## Total Leverage
 ![alt text](https://raw.githubusercontent.com/leedrake5/LVTA/master/Plots/lvta_total.jpg?)
 Total debt to both free and margin capital. 
