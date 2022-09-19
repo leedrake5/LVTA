@@ -16,7 +16,7 @@ library(rvest)
 lvta_main <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "LVTA")
 finra_nyse <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "FINRA and NYSE")
 nyse <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "NYSE")
-finra_1 <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", FINRA1")
+finra_1 <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "FINRA1")
 finra_2 <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "FINRA2")
 
 

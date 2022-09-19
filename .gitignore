@@ -1,3 +1,4 @@
 
 *.json
 R/back.r
+.DS_Store
