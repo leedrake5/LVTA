@@ -61,14 +61,16 @@ cat("  Parsed", nrow(finra_data), "rows from FINRA.\n\n")
 cat("Step 3: Fetching existing Google Sheet data...\n")
 existing_data <- read_sheet(SHEET_URL, sheet = "LVTA")
 
-# Extract year-month from existing dates (handles varying day values like 2025-09-22)
+# Find the latest existing date (to only append newer data, skip historical gaps)
 existing_yearmonths <- substr(as.character(existing_data$Date), 1, 7)
-cat("  Found", length(existing_yearmonths), "existing records.\n\n")
+latest_existing <- max(existing_yearmonths)
+cat("  Found", length(existing_yearmonths), "existing records.\n")
+cat("  Latest existing month:", latest_existing, "\n\n")
 
-# Step 4: Find new data to append (compare by year-month only)
+# Step 4: Find new data to append (only months AFTER the latest existing)
 cat("Step 4: Checking for new data...\n")
 new_data <- finra_data %>%
-  filter(!(YearMonth %in% existing_yearmonths)) %>%
+  filter(YearMonth > latest_existing) %>%
   select(Date, `Debt Balances`, `Free Credit Balances Cash`, `Free Credit Balances Margin`)
 
 if (nrow(new_data) == 0) {
