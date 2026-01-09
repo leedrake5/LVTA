@@ -22,7 +22,7 @@ finra_2 <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq
 
 ###LVTA
 lvta_data = lvta_main[,c("Date", "LVTA")]
-lvta_data$Date <- as.Date(as.character(unlist(lvta_data$Date)))
+lvta_data$Date <- ymd(as.character(unlist(lvta_data$Date)))
 colnames(lvta_data) <- c("Date", "LVTA")
 lvta_data <- lvta_data %>%
     arrange(Date) %>%
@@ -40,7 +40,7 @@ ggsave("~/Github/LVTA/Plots/lvta_total.jpg", current_lvta, device="jpg", width=6
 
 ###Free LVTA
 lvta_free_data = lvta_main[,c("Date", "Free_LVTA")]
-lvta_free_data$Date <- as.Date(as.character(unlist(lvta_free_data$Date)))
+lvta_free_data$Date <- ymd(as.character(unlist(lvta_free_data$Date)))
 colnames(lvta_free_data) <- c("Date", "Free_LVTA")
 lvta_free_data <- lvta_free_data %>%
     arrange(Date) %>%
@@ -58,7 +58,7 @@ ggsave("~/Github/LVTA/Plots/lvta_free.jpg", current_lvta_free, device="jpg", wid
 
 ###Margin LVTA
 lvta_margin_data = lvta_main[,c("Date", "Margin_LVTA")]
-lvta_margin_data$Date <- as.Date(as.character(unlist(lvta_margin_data$Date)))
+lvta_margin_data$Date <- ymd(as.character(unlist(lvta_margin_data$Date)))
 colnames(lvta_margin_data) <- c("Date", "Margin_LVTA")
 lvta_margin_data <- lvta_margin_data %>%
     arrange(Date) %>%
