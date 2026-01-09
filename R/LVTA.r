@@ -14,15 +14,21 @@ library(rvest)
 
 
 lvta_main <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "LVTA")
-finra_nyse <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "FINRA and NYSE")
-nyse <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "NYSE")
-finra_1 <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "FINRA1")
-finra_2 <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE/edit#gid=0", "FINRA2")
-
 
 ###LVTA
-lvta_data = lvta_main[,c("Date", "LVTA")]
-lvta_data$Date <- as_date(unlist(lvta_data$Date))
+library(dplyr)
+
+lvta_data <- lvta_main %>%
+  select(Date, LVTA) %>%
+  mutate(
+    Date = as.Date(
+      vapply(Date, function(x) {
+        if (length(x) == 0 || all(is.na(x))) return(NA_character_)
+        as.character(x[[1]])
+      }, character(1))
+    )
+  )
+lvta_data$Date <- as_date(lvta_data$Date)
 colnames(lvta_data) <- c("Date", "LVTA")
 lvta_data <- lvta_data %>%
     arrange(Date) %>%
@@ -40,7 +46,7 @@ ggsave("~/Github/LVTA/Plots/lvta_total.jpg", current_lvta, device="jpg", width=6
 
 ###Free LVTA
 lvta_free_data = lvta_main[,c("Date", "Free_LVTA")]
-lvta_free_data$Date <- as_date(unlist(lvta_free_data$Date))
+lvta_free_data$Date <- as_date(lvta_data$Date)
 colnames(lvta_free_data) <- c("Date", "Free_LVTA")
 lvta_free_data <- lvta_free_data %>%
     arrange(Date) %>%
@@ -58,7 +64,7 @@ ggsave("~/Github/LVTA/Plots/lvta_free.jpg", current_lvta_free, device="jpg", wid
 
 ###Margin LVTA
 lvta_margin_data = lvta_main[,c("Date", "Margin_LVTA")]
-lvta_margin_data$Date <- as_date(unlist(lvta_margin_data$Date))
+lvta_margin_data$Date <- as_date(lvta_data$Date)
 colnames(lvta_margin_data) <- c("Date", "Margin_LVTA")
 lvta_margin_data <- lvta_margin_data %>%
     arrange(Date) %>%
