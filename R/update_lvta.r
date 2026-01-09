@@ -61,10 +61,11 @@ cat("  Parsed", nrow(finra_data), "rows from FINRA.\n\n")
 cat("Step 3: Fetching existing Google Sheet data...\n")
 existing_data <- read_sheet(SHEET_URL, sheet = "LVTA")
 
-# Find the latest existing date (to only append newer data, skip historical gaps)
+# Filter out blank rows and extract year-month from valid dates
+existing_data <- existing_data %>% filter(!is.na(Date))
 existing_yearmonths <- substr(as.character(existing_data$Date), 1, 7)
-latest_existing <- max(existing_yearmonths)
-cat("  Found", length(existing_yearmonths), "existing records.\n")
+latest_existing <- max(existing_yearmonths, na.rm = TRUE)
+cat("  Found", nrow(existing_data), "existing records (excluding blanks).\n")
 cat("  Latest existing month:", latest_existing, "\n\n")
 
 # Step 4: Find new data to append (only months AFTER the latest existing)
