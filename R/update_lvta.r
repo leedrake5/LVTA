@@ -10,6 +10,8 @@ library(googlesheets4)
 library(tidyverse)
 library(lubridate)
 
+googlesheets4::gs4_auth_configure(api_key=api_key)
+
 # Configuration
 FINRA_URL <- "https://www.finra.org/sites/default/files/2021-03/margin-statistics.xlsx"
 SHEET_URL <- "https://docs.google.com/spreadsheets/d/1Qq2EYhEZeQfszqlYD-lyEsa6VJcGZSq4V9KabMUf2fE"
@@ -83,7 +85,7 @@ cat("\n")
 
 # Step 5: Append raw data to Google Sheet (arrayformulas will calculate LVTA metrics)
 cat("Step 5: Appending raw data to Google Sheet...\n")
-sheet_append(SHEET_URL, new_data, sheet = "LVTA")
+googlesheets4::sheet_append(SHEET_URL, new_data, sheet = "LVTA")
 cat("  Appended successfully. Sheet formulas will calculate LVTA metrics.\n\n")
 
 # Step 6: Regenerate plots
