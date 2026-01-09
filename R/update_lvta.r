@@ -41,19 +41,17 @@ finra_raw <- read_excel(TEMP_FILE)
 # Rename columns to match Google Sheet headers exactly
 colnames(finra_raw) <- c("Date", "Debt Balances", "Free Credit Balances Cash", "Free Credit Balances Margin")
 
-# Parse FINRA date format (e.g., "Nov-25" -> "2025-11-01")
+# Parse FINRA date format: "2025-11" -> "2025-11-01"
 finra_data <- finra_raw %>%
   filter(!is.na(`Debt Balances`)) %>%
   mutate(
-    # Parse "Mon-YY" format and set to first of month
-    Date = parse_date_time(paste0("01-", Date), orders = "dmy") %>% as.Date()
+    # FINRA format is YYYY-MM, append -01 for first of month
+    Date = paste0(Date, "-01"),
+    # Extract year-month for comparison (ignores day differences in sheet)
+    YearMonth = substr(Date, 1, 7)
   ) %>%
-  filter(!is.na(Date)) %>%
+  filter(!is.na(Date) & nchar(Date) == 10) %>%
   arrange(Date)
-
-# Format date for Google Sheets (YYYY-MM-DD)
-finra_data <- finra_data %>%
-  mutate(Date = format(Date, "%Y-%m-%d"))
 
 cat("  Parsed", nrow(finra_data), "rows from FINRA.\n\n")
 
@@ -61,13 +59,14 @@ cat("  Parsed", nrow(finra_data), "rows from FINRA.\n\n")
 cat("Step 3: Fetching existing Google Sheet data...\n")
 existing_data <- read_sheet(SHEET_URL, sheet = "LVTA")
 
-existing_dates <- existing_data$Date
-cat("  Found", length(existing_dates), "existing records.\n\n")
+# Extract year-month from existing dates (handles varying day values like 2025-09-22)
+existing_yearmonths <- substr(as.character(existing_data$Date), 1, 7)
+cat("  Found", length(existing_yearmonths), "existing records.\n\n")
 
-# Step 4: Find new data to append (raw columns only - formulas calculate LVTA)
+# Step 4: Find new data to append (compare by year-month only)
 cat("Step 4: Checking for new data...\n")
 new_data <- finra_data %>%
-  filter(!(Date %in% existing_dates)) %>%
+  filter(!(YearMonth %in% existing_yearmonths)) %>%
   select(Date, `Debt Balances`, `Free Credit Balances Cash`, `Free Credit Balances Margin`)
 
 if (nrow(new_data) == 0) {
