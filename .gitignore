@@ -2,3 +2,4 @@
 *.json
 R/back.r
 .DS_Store
+R/update_lvta.log

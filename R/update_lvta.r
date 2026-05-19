@@ -61,10 +61,15 @@ cat("  Parsed", nrow(finra_data), "rows from FINRA.\n\n")
 cat("Step 3: Fetching existing Google Sheet data...\n")
 existing_data <- read_sheet(SHEET_URL, sheet = "LVTA")
 
-# Filter out blank rows and extract year-month from valid dates
+# Filter out blank rows and extract year-month from valid dates.
+# `Date` comes back as a list-column from read_sheet(), so unwrap it before
+# coercing to Date — otherwise as.character() deparses to raw epoch seconds.
 existing_data <- existing_data %>% filter(!is.na(Date))
-existing_yearmonths <- substr(as.character(existing_data$Date), 1, 7)
-latest_existing <- max(existing_yearmonths, na.rm = TRUE)
+existing_dates <- as.Date(vapply(existing_data$Date, function(x) {
+  if (length(x) == 0 || all(is.na(x))) return(NA_character_)
+  as.character(x[[1]])
+}, character(1)))
+latest_existing <- format(max(existing_dates, na.rm = TRUE), "%Y-%m")
 cat("  Found", nrow(existing_data), "existing records (excluding blanks).\n")
 cat("  Latest existing month:", latest_existing, "\n\n")
 
